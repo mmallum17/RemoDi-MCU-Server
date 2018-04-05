@@ -28,10 +28,15 @@ const server = net.createServer((client) => {
     client.on('data', function (chunk) {
         //console.log(chunk.toString());
         let tokens = chunk.toString().split(",");
+        let command = tokens[0];
         let loadCellZero = parseFloat(tokens[1]);
         let loadCellOne = parseFloat(tokens[2]);
         let loadCellTwo = parseFloat(tokens[3]);
         let loadCellThree = parseFloat(tokens[4]);
+
+        // Send websocket data
+        socket.emit('lc', loadCellZero, loadCellOne, loadCellTwo, loadCellThree);
+
         console.log(tokens);
         MongoClient.connect(uri, function(err, client) {
             if (err) {
